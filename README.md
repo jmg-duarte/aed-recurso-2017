@@ -1,8 +1,10 @@
 # AED Recurso 2017
 
-**1 a)** ![AVL 1,8,10,11](https://s14.postimg.org/4b9w02xep/Screenshot_from_2018-01-07_13-21-53.png)
+**1 a)**
+![AVL 1,8,10,11](https://s14.postimg.org/4b9w02xep/Screenshot_from_2018-01-07_13-21-53.png)
 
-**1 b)** ![AVL 1,3,5,8,10,11](https://s14.postimg.org/dx3ggkbrl/Screenshot_from_2018-01-07_13-33-54.png)
+**1 b)**
+![AVL 1,3,5,8,10,11](https://s14.postimg.org/dx3ggkbrl/Screenshot_from_2018-01-07_13-33-54.png)
 
 **2)**
 ```java
