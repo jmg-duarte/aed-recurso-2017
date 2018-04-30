@@ -16,8 +16,8 @@ Comunicação *síncrona*:
     * Receber a resposta do recetor – *comunicação pedido / resposta* ou cliente / servidor.
 
 ---
-## Persistência
 
+## Persistência
 
 Comunicação *volátil*:
 
@@ -26,9 +26,10 @@ Comunicação *volátil*:
 Comunicação *persistente*:
 * As mensagens são guardadas pelo sistema de comunicação até serem consumidas pelos destinatários, que podem não estar a executar.
 * Mensagens são guardadas num receptáculo independente do recetor – mailbox, canal, porta persistente, etc.
----
-## Fiabilidade
 
+---
+
+## Fiabilidade
 
 Comunicação *fiável*: 
 * O sistema garante a entrega das mensagens em caso de falha temporária.
@@ -37,12 +38,12 @@ Comunicação *não-fiável (best-effort)*:
 * Em caso de falha, as mensagens podem perder-se.
 
 ---
+
 # 3 - Invoção Remota
  
 ## RPCs - Automatização (Proxy/Stub Compilers)
 
 * É costume designar-se de *stub do cliente* às funções do cliente que efectuam a comunicação com o servidor para executar o método no servidor.
-
 * Do lado do servidor, o *stub* ou *skeleton* do servidor corresponde ao código de comunicação para esperar as invocações e executá-las, devolvendo o.
 
 Em alguns sistemas e ambientes usam-se ferramentas (compiladores) para gerar os stubs:
@@ -57,7 +58,6 @@ Em alguns sistemas e ambientes usam-se ferramentas (compiladores) para gerar os 
 As interfaces são definidas na própria linguagem Java, usando código standard.
 
 * A interface deve estender java.rmi.Remote
-
 * Todos os métodos devem lançar a excepção java.rmi.RemoteException
 
 ---
@@ -67,12 +67,11 @@ As interfaces são definidas na própria linguagem Java, usando código standard
 Definição da interface em XML:
 
 * WSDL permite definir a interface do serviço, indicando quais as mensagens trocadas na interacção.
-
 * WSDL permite também definir a forma de representação dos dados e a forma de aceder ao serviço
 
 ---
 
-## Passagem de parâmetros Valor vs. Referência
+## Passagem de Parâmetros - *Valor vs. Referência*
 
 Passagem por valor para tipos básicos, arrays, estruturas e objectos não remotos:
 
@@ -83,18 +82,12 @@ Passagem por referência para objectos remotos:
 
 * Quando o tipo de um parâmetro é um objecto remoto, uma referência para o objecto é transferida
 
-
-> A passagem por referência não faz sentido quando estão envolvidas máquinas distintas.
-
-
+> A passagem por referência não faz sentido quando estão envolvidas máquinas distintas
 
 *Explicação*:
-
-   * Em Java, quando a invocação é local, os objetos são passados por referência. Efeitos aplicados sobre os parâmetros (não primitivos) permanecem após o retorno dos métodos.
-
-  *  Quando a invocação é remota (Java RMI), os objectos não remotos são passados por valor (cópia). Efeitos aplicados nas cópias dos parâmetros (objectos não remotos) não são visíveis na máquina que fez a invocação.
-
-  *  Quando a invocação é remota (Java RMI), os objetos remotos são passados por referência. Efeitos aplicados sobre os parâmetros que sejam objectos remotos permanecem nesses objectos após o retorno.
+* Em Java, quando a invocação é local, os objetos são passados por referência. Efeitos aplicados sobre os parâmetros (não primitivos) permanecem após o retorno dos métodos.
+* Quando a invocação é remota (Java RMI), os objectos não remotos são passados por valor (cópia). Efeitos aplicados nas cópias dos parâmetros (objectos não remotos) não são visíveis na máquina que fez a invocação.
+* Quando a invocação é remota (Java RMI), os objetos remotos são passados por referência. Efeitos aplicados sobre os parâmetros que sejam objectos remotos permanecem nesses objectos após o retorno.
 
 
 ---
@@ -102,21 +95,16 @@ Passagem por referência para objectos remotos:
 ## Codificação de Dados
 
 * *Marshalling* – processo de codificar do *formato interno* para o *formato rede*
-
 * *Unmarshalling* – processo de descodificar do *formato rede* para o *formato interno*
 
 ### Aproximações à Codificação de Dados
 
 * *Formato intermédio independente (network standard representation)*
-
     * Emissor converte da sua representação nativa para a representação da rede
     * O receptor converte da representação da rede para a sua representação
-
 * *Formato do emissor (Receiver makes it right)*
-
     * Emissor envia usando a sua representação interna, indicando qual ela é
     * Receptor, ao receber, faz a conversão para a sua representação
-
 * *Formato do receptor (Sender makes it right)*
 
 ---
@@ -129,9 +117,8 @@ JSON é uma forma de codificação de dados que permite descrever estruturas de 
     * Number
     * String
     * Boolean
-
-*  *Tipos complexos*
-    * Array/Lista
+* *Tipos complexos*
+    * Array
     * Object (dicionário chave/valor)    
 
 Como a codificação JSON não preserva os tipos dos dados, a *descodificação* de estruturas complexas *exige saber "navegar" no resultado*. Alternativamente, em Java, existem bibliotecas que *dada a classe do objeto* esperado retornam uma instância quando a *descodificação tem sucesso*
@@ -150,7 +137,7 @@ Tem como objetivo, *reduzir a dimensão* da codificação e *acelerar* o seu pro
 
 ### Protocolo TCP / HTTP
 
-O cliente usa uma conexão TCP (ou HTTP) para contatar o servidor, enquanto não receber resposta não avança com outro pedido.
+O cliente usa uma conexão TCP (ou HTTP) para contactar o servidor, enquanto não receber resposta não avança com outro pedido.
 
 * O cliente fez um pedido e recebeu a resposta:
     * O cliente tem a certeza que o procedimento executou uma e uma só vez
@@ -165,7 +152,7 @@ O cliente usa uma conexão TCP (ou HTTP) para contatar o servidor, enquanto não
 O cliente usa o protocolo UDP para contactar o servidor, enquanto não receber resposta a um pedido não avança com outro pedido.
 
 * O cliente enviou uma só vez o pedido e recebeu a resposta
-    * O cliente tem a certeza que o procedimento executou uma e uma só vez, (mas apenas se assumirmos que não existe duplicação de pacotes)
+    * O cliente tem a certeza que o procedimento executou uma e uma só vez (mas apenas se assumirmos que não existe duplicação de pacotes)
 * O cliente fez o pedido e não recebeu nenhuma resposta até um certo timeout.
     * Não se sabe se a operação foi executada ou não
 
@@ -174,34 +161,30 @@ O cliente usa o protocolo UDP para contactar o servidor, enquanto não receber r
 
 ## Semânticas da invocação remota
 
-* Zero ou uma vez / talvez / may be
-    * variante: zero ou mais vezes
-* Pelo menos uma vez / at least once
-    * Operações idempotentes
-* No máximo uma vez / at most once
-* Exatamente uma vez / *exactly once+
+* Zero ou uma vez / talvez / *maybe*
+    * Variante: Zero ou mais vezes
+* Pelo menos uma vez / *at least once*
+    * [Operações idempotentes](https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning)
+* No máximo uma vez / *at most once*
+* Exatamente uma vez / *exactly once*
 
 *Zero ou mais vezes (talvez)*
 
-*Não dá quaisquer garantias*. A operação poderá ter sido executada uma vez ou nem ter sido executada.
+* *Não dá quaisquer garantias* 
+    * A operação poderá ter sido executada uma vez ou nem ter sido executada.
+    * Pouco utilizada. Pode ser usada quando *não são esperados resultados* , por exemplo para implementar notificações e *heart beats não críticos*.
 
-Pouco utilizada. Pode ser usada quando *não são esperados resultados* , por exemplo para implementar notificações e *heart beats não críticos*.
 
-
-*Pelo menos uma vez (uma ou mais vezes )*
-
+*Pelo menos uma vez (uma ou mais vezes)*
 * Se o cliente recebeu a resposta, a operação foi executado uma ou mais vezes.
 * Se o cliente não recebeu a resposta, a operação foi executada zero ou mais vezes, obrigando a repetir o pedido.
 
-
 *No máximo uma vez*
-
 * Se cliente recebeu a resposta, o procedimento foi executado uma e uma só vez.
 * Se o cliente não recebeu a resposta, o procedimento foi executado zero ou uma vez.
 
 
 *Exatamente uma vez*
-
 * Garante-se que a operação é executada exatamente uma vez (nem mais, nem menos), assumindo que as falhas não são permanentes.
 
 ---
@@ -229,9 +212,9 @@ Uma operação é *idempotente* se a sua execução repetida não altera o efeit
 
 As relações entre threads e invocações mais comuns são:
 
-* *Thread-per-request* - cada invocação é executada por um thread
-* *Thread-per-connection* - as invocações de uma conexão são executadas todas pelo mesmo thread
-* *Thread-per-object* - as invocações para um objeto são executadas todas pelo mesmo thread
+* *Thread-per-Request* - cada invocação é executada por um thread
+* *Thread-per-Connection* - as invocações de uma conexão são executadas todas pelo mesmo thread
+* *Thread-per-Object* - as invocações para um objeto são executadas todas pelo mesmo thread
 ---
 
 # 4 - Web services e modelos alternativos de interacção cliente/servidor na internet 
@@ -240,9 +223,9 @@ As relações entre threads e invocações mais comuns são:
 
 *SOAP* - protocolo de invocação remota. Fornece um mecanismo que pode ser usado para trocar mensagens entre clientes e servidores da web.
 * Oneway
-* Pedido-resposta
+* Pedido-Resposta
 * Notificação
-* Notificação-resposta
+* Notificação-Resposta
 
 *WSDL* - linguagem de espeficicação de serviços.
 * É um documento xml com todos as carateristicas dos metodos *SOAP*,permite definir interface, representação dos dados, etc.   
@@ -251,7 +234,7 @@ As relações entre threads e invocações mais comuns são:
 * É um Web Service que usa um mecanismo de desoberta de serviços da web, fornece um mecanismo que pode ser usado pra localizar um serviço web/aceder info sobre esse serviço
 
 
-*TL;DR* : *UDDI* é um Web Service em si próprio, é possível aceder ao *UDDI* usando *SOAP* e a sua interface escuta usando *WSDL*.
+*TL;DR* - *UDDI* é um Web Service em si próprio, é possível aceder ao *UDDI* usando *SOAP* e a sua interface escuta usando *WSDL*.
 Serviços registados em *UDDI* não são obrigatórios ter interface *SOAP* nem descrição *WSDL*.
 
 ---
@@ -261,45 +244,42 @@ Serviços registados em *UDDI* não são obrigatórios ter interface *SOAP* nem 
 ## Publish/Subscrive : Arquiteturas
 
 * *Centralizadas*
-    Existem servidores, denominados *broker(s)* )
-    Tanto os editores como os assinantes operam como clientes do broker.
-    Permite implementar funcionalidades adicionais com relativa facilidade–
-    e.g.: persistência, filtragem baseada no conteúdo, replicação,
-    particionamento.
+    * Existem servidores, denominados *broker(s)*.
+        * Tanto os editores como os assinantes operam como clientes do broker.
+    * Permite implementar funcionalidades adicionais com relativa facilidade
+        * e.g. - persistência, filtragem baseada no conteúdo, replicação particionamento.
 * *Descentralizadas* (P2P)
-    Os editores e os subscritores organizam-se entre si para
-    encaminhar os eventos.
+    * Os editores e os subscritores organizam-se entre si para encaminhar os eventos.
+    
 ---
- ## CARACTERIZAÇÃO DO MULTICAST: *FIABILIDADE*
 
-*Multicast não fiável (unreliable multicast)* – em caso de falha,
-não existem garantias sobre a entrega das mensagem aos
+## Caracterização de Multicast: *Fiabilidade*
+
+*Multicast não fiável (unreliable multicast)* – em caso de falha, não existem garantias sobre a entrega das mensagem aos
 vários elementos do grupo.
-* e.g., a mensagem pode ser não entregue a nenhum ou a alguns dos
+* e.g. - a mensagem pode ser não entregue a nenhum ou a alguns dos
 membros do grupo.
-* e.g. IP mutlicast
+* e.g. - IP mutlicast
 
 
-*Multicast fiável (reliable multicast)* – uma mensagem enviada
-para um grupo ou é entregue por todos os membros correctos
-(que não falham) ou por nenhum
+*Multicast fiável (reliable multicast)* – uma mensagem enviada para um grupo ou é entregue por todos os membros correctos (que não falham) ou por nenhum
 
 ---
 
-## CARACTERIZAÇÃO DO MULTICAST: *ORDEM*
+## Caracterização de Multicast: *Ordem*
 
 *Sem ordem* – as mensagens podem ser entregues por
-diferentes ordens em diferentes processos.
+diferentes ordens em diferentes processos
 
-*Ordem FIFO* – as mensagens de um processo são entregues
-pela ordem de emissão em todos os processos.
+*FIFO (First In First Out)* – as mensagens de um processo são entregues
+pela ordem de emissão em todos os processos
 
-*Ordem causal* – se m1 pode causar m2, m1 deve ser entregue
-sempre antes de m2.
+*Ordem causal* – se *M1* pode causar *M2*, *M1* deve ser entregue
+sempre antes de *M2*
 
-*Ordem total* – as mensagens m1, m2 são entregues por ordem
+*Ordem total* – as mensagens *M1*, *M2* são entregues por ordem
 total, se forem entregues pela mesma ordem em todos os
-processos.
+processos
 
 * Implementação pode ser conseguida à custa de um sequenciador.
     * solução centralizada – as mensagens são enviadas ao sequenciador
@@ -309,7 +289,7 @@ processos.
     adicional que estabelece a ordem de entrega a observar em todos os
     receptores.
 
-*Ordem total causal* – ordem total + ordem causal
+*Ordem total causal* – ordem total & ordem causal
 
 ---
 
@@ -336,7 +316,6 @@ Melhor potencial de escalabilidade
 Baixo custo de operação.
 
 *Negativo:*
-
 * Interação mais complexa (do que num sistema cliente/servidor) leva a
 implementações mais complexas
 Operações de pesquisa são complexas
@@ -453,16 +432,16 @@ Os membros do sistema comunicam de acordo com uma organização definida de form
 
 Permitem implementar tabelas de dispersão distribuídas, e.g., DHTs (Distributed Hash Tables):
 
-- `lookup(chave) -> IP`
-- `get(IP, chave) -> valor`
-- `put(IP, chave, valor)`
+* `lookup(chave) -> IP`
+* `get(IP, chave) -> valor`
+* `put(IP, chave, valor)`
 
 ---
 
 ## DHT (Distributed Hash Table) - Características
-*identificador = hash(info)*
+> *identificador = hash(info)*
 
-Aspetos importantes...
+Aspetos importantes
 
 * Pesquisa? – pesquisa por identificador deve ser eficiente e suportada por
 todos os nós.
@@ -480,8 +459,7 @@ manter a informação replicada nos nós certos e em número adequado.
 * **C/S**
     * *Tracker* - servidor centralizado HTTP que serve o ficheiro `.torrent` e a lista dos peers que estão a descarregar o ficheiro
 
-    * *Peers:* como clientes, acedem ao tracker para obter a lista de outros peers a
-descarregar o ficheiro
+    * *Peers:* como clientes, acedem ao tracker para obter a lista de outros peers a descarregar o ficheiro
 
 * **P2P**
     * *Peers* - comunicam entre si para trocar blocos do ficheiro
@@ -519,10 +497,7 @@ descarregar o ficheiro
 
 ## Algumas Definições
 ### **Fault tolerance** - Tolerância a Falhas
-Propriedade de um sistema distribuído que lhe permite *recuperar* da existência de falhas *sem introduzir comportamentos incorretos*.
-Um sistema deste tipo pode mascarar as falhas e continuar
-*a operar*, ou *parar* e voltar a operar mais tarde, de forma
-coerente, após reparação da falha
+* Propriedade de um sistema distribuído que lhe permite *recuperar* da existência de falhas *sem introduzir comportamentos incorretos*. Um sistema deste tipo pode mascarar as falhas e continuar *a operar*, ou *parar* e voltar a operar mais tarde, de forma coerente, após reparação da falha
 
 ---
 
