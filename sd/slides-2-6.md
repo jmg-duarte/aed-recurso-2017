@@ -4,51 +4,51 @@
 
 ## Sincronização
 
-Regra geral, o recetor fica `bloqueado` até ser possível receber dados.
+Regra geral, o recetor fica *bloqueado* até ser possível receber dados.
 
-Comunicação `assíncrona`:
+Comunicação *assíncrona*:
 
-* O emissor só fica `bloqueado` até o seu pedido de envio ser tomado em consideração.
+* O emissor só fica *bloqueado* até o seu pedido de envio ser tomado em consideração.
 
-Comunicação `síncrona`: o emissor fica `bloqueado` até:
-
-* O recetor “receber” os dados – `comunicação síncrona unidireccional`.
-* Receber a resposta do recetor – `comunicação pedido / resposta` ou cliente / servidor.
+Comunicação *síncrona*:
+* o emissor fica *bloqueado* até:
+    * O recetor “receber” os dados – *comunicação síncrona unidireccional*.
+    * Receber a resposta do recetor – *comunicação pedido / resposta* ou cliente / servidor.
 
 ---
 ## Persistência
 
 
-Comunicação `volátil`:
+Comunicação *volátil*:
 
 * As mensagens apenas são encaminhadas se o recetor existir e estiver a executar, caso contrário são destruídas.
 
-Comunicação `persistente`:
+Comunicação *persistente*:
 * As mensagens são guardadas pelo sistema de comunicação até serem consumidas pelos destinatários, que podem não estar a executar.
 * Mensagens são guardadas num receptáculo independente do recetor – mailbox, canal, porta persistente, etc.
 ---
 ## Fiabilidade
 
 
-Comunicação `fiável`: 
+Comunicação *fiável*: 
 * O sistema garante a entrega das mensagens em caso de falha temporária.
 
-Comunicação `não-fiável` (best-effort): 
+Comunicação *não-fiável (best-effort)*: 
 * Em caso de falha, as mensagens podem perder-se.
 
 ---
 # 3 - Invoção Remota
  
- ## RPCs - Automatização (Proxy/Stub Compilers)
+## RPCs - Automatização (Proxy/Stub Compilers)
 
-* É costume designar-se de `stub do cliente` às funções do cliente que efectuam a comunicação com o servidor para executar o método no servidor.
+* É costume designar-se de *stub do cliente* às funções do cliente que efectuam a comunicação com o servidor para executar o método no servidor.
 
-* Do lado do servidor, o `stub` ou `skeleton` do servidor corresponde ao código de comunicação para esperar as invocações e executá-las, devolvendo o.
+* Do lado do servidor, o *stub* ou *skeleton* do servidor corresponde ao código de comunicação para esperar as invocações e executá-las, devolvendo o.
 
 Em alguns sistemas e ambientes usam-se ferramentas (compiladores) para gerar os stubs:
-* e.g., wsimport para WebServices SOAP.
-* e.g., Java RMI, Servidor JAX-RS(Jersey)
-* e.g., .NET Remoting.
+* *wsimport* para WebServices SOAP
+* Java RMI, Servidor JAX-RS(Jersey)
+* .NET Remoting
 
 ---
 
@@ -62,7 +62,7 @@ As interfaces são definidas na própria linguagem Java, usando código standard
 
 ---
 
-## WSDL – IDL para web services
+## WSDL – IDL para Web Services
 
 Definição da interface em XML:
 
@@ -84,11 +84,11 @@ Passagem por referência para objectos remotos:
 * Quando o tipo de um parâmetro é um objecto remoto, uma referência para o objecto é transferida
 
 
-A passagem por referência não faz sentido quando estão envolvidas máquinas distintas.
+> A passagem por referência não faz sentido quando estão envolvidas máquinas distintas.
 
 
 
-`Explicação`:
+*Explicação*:
 
    * Em Java, quando a invocação é local, os objetos são passados por referência. Efeitos aplicados sobre os parâmetros (não primitivos) permanecem após o retorno dos métodos.
 
@@ -101,51 +101,48 @@ A passagem por referência não faz sentido quando estão envolvidas máquinas d
 
 ## Codificação de Dados
 
-* Marshalling – processo de codificar do `formato interno` para o `formato rede`
+* *Marshalling* – processo de codificar do *formato interno* para o *formato rede*
 
-* Unmarshalling – processo de descodificar do `formato rede` para o `formato interno`
+* *Unmarshalling* – processo de descodificar do *formato rede* para o *formato interno*
 
 ### Aproximações à Codificação de Dados
 
-* `Formato intermédio` independente (`network standard representation`)
+* *Formato intermédio independente (network standard representation)*
 
     * Emissor converte da sua representação nativa para a representação da rede
     * O receptor converte da representação da rede para a sua representação
 
-* `Formato do emissor` (`receiver makes it right`)
+* *Formato do emissor (Receiver makes it right)*
 
     * Emissor envia usando a sua representação interna, indicando qual ela é
     * Receptor, ao receber, faz a conversão para a sua representação
 
-* `Formato do receptor` (`sender makes it right`)
+* *Formato do receptor (Sender makes it right)*
 
 ---
 
-## JSON - JavaScript Object Notation
+## [JSON - JavaScript Object Notation](https://json.org/)
 
-JSON é uma forma de codificação de dados que permite descrever estruturas de dados complexas em formato de texto 
-`Suporta`:
+JSON é uma forma de codificação de dados que permite descrever estruturas de dados complexas em formato de texto que suporta
 
-* `Tipos primitivos`
-        *  Number
-        *  String
-        * Boolean
+* *Tipos primitivos*
+    * Number
+    * String
+    * Boolean
 
-*  `Tipos complexos`
-        * Array/Lista
-        *  Object (dicionário chave/valor)
+*  *Tipos complexos*
+    * Array/Lista
+    * Object (dicionário chave/valor)    
 
-    
-
-Como a codificação JSON não preserva os tipos dos dados, a `descodificação` de estruturas complexas `exige saber "navegar" no resultado`. Alternativamente, em Java, existem bibliotecas que `dada a classe do objeto` esperado retornam uma instância quando a `descodificação tem sucesso`
+Como a codificação JSON não preserva os tipos dos dados, a *descodificação* de estruturas complexas *exige saber "navegar" no resultado*. Alternativamente, em Java, existem bibliotecas que *dada a classe do objeto* esperado retornam uma instância quando a *descodificação tem sucesso*
 
 ---
 
-##  ProtoBuf
+##  [ProtoBuf](https://developers.google.com/protocol-buffers/)
 
 É um formato de codificação de dados desenvolvido pela Google.
-Difere dos dois anteriores, na medida que os dados passam na rede em `formato binário`.
-Tem como objetivo, `reduzir a dimensão` da codificação e `acelerar` o seu processamento.
+Difere dos dois anteriores, na medida que os dados passam na rede em *formato binário*.
+Tem como objetivo, *reduzir a dimensão* da codificação e *acelerar* o seu processamento.
 
 ---
 
@@ -184,54 +181,47 @@ O cliente usa o protocolo UDP para contactar o servidor, enquanto não receber r
 * No máximo uma vez / at most once
 * Exatamente uma vez / *exactly once+
 
-`Zero ou mais vezes (talvez)`
+*Zero ou mais vezes (talvez)*
 
-`Não dá quaisquer garantias`. A operação poderá ter sido executada uma vez ou nem ter sido executada.
+*Não dá quaisquer garantias*. A operação poderá ter sido executada uma vez ou nem ter sido executada.
 
-Pouco utilizada. Pode ser usada quando `não são esperados resultados` , por exemplo para implementar notificações e `heart beats não críticos`.
+Pouco utilizada. Pode ser usada quando *não são esperados resultados* , por exemplo para implementar notificações e *heart beats não críticos*.
 
 
-`Pelo menos uma vez (uma ou mais vezes )`
+*Pelo menos uma vez (uma ou mais vezes )*
 
 * Se o cliente recebeu a resposta, a operação foi executado uma ou mais vezes.
 * Se o cliente não recebeu a resposta, a operação foi executada zero ou mais vezes, obrigando a repetir o pedido.
 
 
-`No máximo uma vez`
+*No máximo uma vez*
 
 * Se cliente recebeu a resposta, o procedimento foi executado uma e uma só vez.
 * Se o cliente não recebeu a resposta, o procedimento foi executado zero ou uma vez.
 
 
-`Exatamente uma vez`
+*Exatamente uma vez*
 
-Garante-se que a operação é executada exatamente uma vez (nem mais, nem menos), assumindo que as falhas não são permanentes.
+* Garante-se que a operação é executada exatamente uma vez (nem mais, nem menos), assumindo que as falhas não são permanentes.
 
 ---
 
 ## Operações Idempotentes
 
-Uma operação é `idempotente` se a sua execução repetida não altera o efeito produzido, deixando o servidor no mesmo estado, ou num estado aplicacionalmente aceitável como equivalente e produzindo o mesmo resultado.
+Uma operação é *idempotente* se a sua execução repetida não altera o efeito produzido, deixando o servidor no mesmo estado, ou num estado aplicacionalmente aceitável como equivalente e produzindo o mesmo resultado.
 
 ---
 
 ### Soluções geralmente adoptadas
-Java RMI
-
-    "no máximo uma vez" sobre TCP
-
-.NET Remoting
-
-    "no máximo uma vez" sobre TCP, HTTP, pipes
-
-Web Services
-
-    "no máximo uma vez" sobre HTTP (SMTP, etc.)
-    WS-Reliability: suporte para “pelo menos uma vez” e “exatamente uma vez”
-
-REST
-
-    "no máximo uma vez" sobre HTTP
+* Java RMI
+    * **no máximo uma vez** sobre TCP
+* .NET Remoting
+   *  **no máximo uma vez** sobre TCP, HTTP, pipes
+* Web Services
+    * **no máximo uma vez** sobre HTTP (SMTP, etc.)
+    * WS-Reliability: suporte para “pelo menos uma vez” e “exatamente uma vez”
+* REST
+    * **no máximo uma vez** sobre HTTP
 
 ---
 
@@ -239,33 +229,30 @@ REST
 
 As relações entre threads e invocações mais comuns são:
 
-* `Thread-per-request`: cada invocação é executada por um thread
-* `Thread-per-connection`: as invocações de uma conexão são executadas todas pelo mesmo thread
-* `Thread-per-object`: as invocações para um objeto são executadas todas pelo mesmo thread
-* 
+* *Thread-per-request* - cada invocação é executada por um thread
+* *Thread-per-connection* - as invocações de uma conexão são executadas todas pelo mesmo thread
+* *Thread-per-object* - as invocações para um objeto são executadas todas pelo mesmo thread
 ---
 
 # 4 - Web services e modelos alternativos de interacção cliente/servidor na internet 
 
 ## Compenentes Básicos
 
-`SOAP`: protocolo de invocação remota.
+*SOAP* - protocolo de invocação remota. Fornece um mecanismo que pode ser usado para trocar mensagens entre clientes e servidores da web.
 * Oneway
 * Pedido-resposta
 * Notificação
 * Notificação-resposta
- 
-`SOAP`- Fornece um mecanicso que pode ser usado para trocar mensagens entre clientes e servidores da web.
 
-`WSDL`: linguagem de espeficicação de serviços.
-* É um documento xml com todos as carateristicas dos metodos `SOAP`,permite definir interface, representação dos dados, etc.   
+*WSDL* - linguagem de espeficicação de serviços.
+* É um documento xml com todos as carateristicas dos metodos *SOAP*,permite definir interface, representação dos dados, etc.   
 
-`UDDI`:serviço de registo.
+*UDDI* - serviço de registo.
 * É um Web Service que usa um mecanismo de desoberta de serviços da web, fornece um mecanismo que pode ser usado pra localizar um serviço web/aceder info sobre esse serviço
 
 
-`resumo` : `UDDI` é um Web Service em si próprio, podes aceder ao `UDDI` usando `SOAP` e a sua interface escuta usando `WSDL`.
-Serviços registados em `UDDI` não são obrigatórios ter interface `SOAP` nem descrição `WSDL`.
+*TL;DR* : *UDDI* é um Web Service em si próprio, é possível aceder ao *UDDI* usando *SOAP* e a sua interface escuta usando *WSDL*.
+Serviços registados em *UDDI* não são obrigatórios ter interface *SOAP* nem descrição *WSDL*.
 
 ---
 
@@ -273,44 +260,44 @@ Serviços registados em `UDDI` não são obrigatórios ter interface `SOAP` nem 
 
 ## Publish/Subscrive : Arquiteturas
 
-* `Centralizadas`
-    Existem servidores, denominados `broker(s)` )
+* *Centralizadas*
+    Existem servidores, denominados *broker(s)* )
     Tanto os editores como os assinantes operam como clientes do broker.
     Permite implementar funcionalidades adicionais com relativa facilidade–
     e.g.: persistência, filtragem baseada no conteúdo, replicação,
     particionamento.
-* `Descentralizadas` (P2P)
+* *Descentralizadas* (P2P)
     Os editores e os subscritores organizam-se entre si para
     encaminhar os eventos.
 ---
- ## CARACTERIZAÇÃO DO MULTICAST: `FIABILIDADE`
+ ## CARACTERIZAÇÃO DO MULTICAST: *FIABILIDADE*
 
-`Multicast não fiável (unreliable multicast)` – em caso de falha,
+*Multicast não fiável (unreliable multicast)* – em caso de falha,
 não existem garantias sobre a entrega das mensagem aos
 vários elementos do grupo.
-* i.e., a mensagem pode ser não entregue a nenhum ou a alguns dos
+* e.g., a mensagem pode ser não entregue a nenhum ou a alguns dos
 membros do grupo.
 * e.g. IP mutlicast
 
 
-`Multicast fiável (reliable multicast)` – uma mensagem enviada
+*Multicast fiável (reliable multicast)* – uma mensagem enviada
 para um grupo ou é entregue por todos os membros correctos
 (que não falham) ou por nenhum
 
 ---
 
-## CARACTERIZAÇÃO DO MULTICAST: `ORDEM`
+## CARACTERIZAÇÃO DO MULTICAST: *ORDEM*
 
-`Sem ordem` – as mensagens podem ser entregues por
+*Sem ordem* – as mensagens podem ser entregues por
 diferentes ordens em diferentes processos.
 
-`Ordem FIFO` – as mensagens de um processo são entregues
+*Ordem FIFO* – as mensagens de um processo são entregues
 pela ordem de emissão em todos os processos.
 
-`Ordem causal` – se m1 pode causar m2, m1 deve ser entregue
+*Ordem causal* – se m1 pode causar m2, m1 deve ser entregue
 sempre antes de m2.
 
-`Ordem total` – as mensagens m1, m2 são entregues por ordem
+*Ordem total* – as mensagens m1, m2 são entregues por ordem
 total, se forem entregues pela mesma ordem em todos os
 processos.
 
@@ -322,34 +309,33 @@ processos.
     adicional que estabelece a ordem de entrega a observar em todos os
     receptores.
 
-`Ordem total causal` – ordem total + ordem causal
+*Ordem total causal* – ordem total + ordem causal
 
 ---
 
 # 6 - Arquiteturas e Modelos de Sistemas Distribuídos
 
-## ARQUITECTURA EM CAMADAS: MODELO THREE-TIER
+## Arquitetura em Camadas: Modelo Three-Tier
 
-*  ` Arquitetura de três níveis`:
-    *  `Apresentação` - Interface utilizador, serve para traduzir tarefas e obter os resultados (input e output do user).
- 
-    * `(Lógica) Aplicação` - Coordena os processos comando da aplicação. Faz decisões logicas e avalia, faz calculos e transporta data de processos entre as 2 camadas (`Apresentação`) e (`Dados`).
-
-    * `(Armazenamento) Dados` - Informação aqui é armazenada para uma base da dados ou file system, depois a informação é passada para a parte (`Lógica`) para ser processada.
+| Nível | Descrição |
+|---|---|
+| *Apresentação* | Interface utilizador, serve para traduzir tarefas e obter os resultados (input e output do user) |
+| *Lógica (Aplicação)* | Coordena os processos comando da aplicação. Faz decisões logicas e avalia, faz calculos e transporta data de processos entre as 2 camadas (*Apresentação*) e (*Armazenamento*) |
+| *Armazenamento (Dados)* | Informação aqui é armazenada para uma base da dados ou file system, depois a informação é passada para a parte (*Lógica*) para ser processada |
     
 ---
 
-## MODELO PEER-TO-PEER (P2P) 
+## Modelo P2P (Peer to Peer)
 
-`Todos os processos têm funcionalidades semelhantes:`
+*Todos os processos têm funcionalidades semelhantes:*
 * Durante a sua operação podem assumir o papel de clientes e servidores do mesmo serviço em diferentes momentos
 
-`Positivo:`
+*Positivo:*
 * Não existe ponto único de falha
 Melhor potencial de escalabilidade
 Baixo custo de operação.
 
-`Negativo:`
+*Negativo:*
 
 * Interação mais complexa (do que num sistema cliente/servidor) leva a
 implementações mais complexas
@@ -358,103 +344,97 @@ Maior número de computadores envolvido
 
 ---
 
-## VARIANTES DO MODELO CLIENTE/SERVIDOR: `SERVIDOR`
+## Variantes do Modelo C/S (Cliente/Servidor): *Servidor*
 
----
-`Cliente/servidor particionado:`
-* Existem vários servidores com a mesma interface, cada um          capaz de
+### *Cliente/servidor particionado:*
+* Existem vários servidores com a mesma interface, cada um capaz de
  responder a uma parte dos pedidos
 
-`Positivo:`
+*Positivo:*
 * Permite distribuir a carga, melhorando o desempenho (potencialmente)
 Não existe um ponto de falha único.
 
-`Negativo:`
+*Negativo:*
 * Falha de um servidor impede acesso aos dados presentes nesse servidor
 difícil de aplicar em alguns modelos de dados.
 
----
-`Cliente/servidor replicado:`
-* Existem vários servidores idênticos (i.e. capazes de responder aos
+### *Cliente/servidor replicado:*
+* Existem vários servidores idênticos (e.g. capazes de responder aos
 mesmo pedidos)
 
-`Positivo:`
+*Positivo:*
 * Redundância - não existe um ponto de falha único
 Permite distribuir a carga, melhorando o desempenho (potencialmente)
 
-`Negativo:`
+*Negativo:*
 * Coordenação - manter estado do servidor coerente em todas as réplicas
 Recuperar da falha parcial de um servidor
 
----
-
-`Cliente/servidor geo-replicado:`
+### *Cliente/servidor geo-replicado:*
 * Servidor replicado, com réplicas distribuídas geograficamente
 
-`Positivo:`
+*Positivo:*
 * Proximidade aos clientes melhora a qualidade de serviço (latência)
 Redundância acrescida – as falhas das réplicas são (ainda) mais
 independentes
 
-`Negativo:`
+*Negativo:*
 * Coordenação mais dispendiosa – maior separação física das réplicas
 traduz-se na utilização de canais com latência significativa
 
 ---
----
-## VARIANTES DO MODELO CLIENTE/SERVIDOR: `CLIENTE`
+
+## Variantes do Modelo C/S (Cliente/Servidor): *Cliente*
 
 
-`Cliente leve (thin client)/servidor:`
+### *Cliente leve (Thin Client)/Servidor:*
 * O cliente apenas inclui uma interface (gráfica) para executar operações
 no servidor (ex.: browser)
 
-`Positivo:`
-* Cliente pode ser muito simples
+    *Positivo*
+    * Cliente pode ser muito simples
 
-`Negativo:`
-* Maior peso no servidor
-Impacto na interatividade (latência)
+    *Negativo*
+    * Maior peso no servidor
+    * Impacto na interatividade (latência)
 
----
-
-`Cliente completo (estendido)/servidor:`
+### *Cliente completo (estendido)/servidor:*
 
 O cliente executa localmente algumas operações que seriam
 executadas pelo servidor
-Usado na Web em vários níveis: browsers fazem cache de páginas,
-imagens, etc; HTML 5.0 permite às aplicações Web guardar dados
-localmente – e.g. suporte offline no Google Docs, Gmail
 
-`Positivo:`
+Usado na Web em vários níveis: 
+* Browsers fazem cache de páginas, imagens, etc;
+* HTML 5.0 permite às aplicações Web guardar dados
+localmente 
+    * e.g. suporte offline no Google Docs, Gmail
+
+*Positivo:*
 * Permite funcionar offline, quando não é possível contactar o servidor
 (recorrendo a caching)
-Permite diminuir a carga do servidor e melhorar o desempenho e a
+* Permite diminuir a carga do servidor e melhorar o desempenho e a
 interatividade
 
-`Negativo:`
+*Negativo:*
 * Implementação do cliente mais complexa
-Necessário tratar da coerência dos dados entre o cliente e o servidor
+* Necessário tratar da coerência dos dados entre o cliente e o servidor
 
 ---
 
----
-
-## VARIANTES DO MODELO PEER-TO-PEER : 
-
+## Variantes do Modelo P2P (Peer to Peer)
 
 ### Sistema P2P não estruturado
 
-As ligações entre os membros são formadas de forma `não-determinista`.
-* E.g. quando se junta à rede, um membro escolhe para vizinhos um pequeno
+As ligações entre os membros são formadas de forma *não-determinista*.
+* e.g. quando se junta à rede, um membro escolhe para vizinhos um pequeno
 conjunto de contactos (os contactos podem variar durante a execução do
 sistema e de execução para execução).
 
-`Positivo:`
+*Positivo:*
 * Simplicidade de construir, robusto ao dinamismo da rede (churn – entrada e
 saída de nós participantes).
 
-`Negativo:`
+*Negativo:*
 * Produz topologias que podem ser difíceis de explorar de forma eficiente
 eg., dificuldade em indexar informação / pesquisa pesada (frequentemente
 por inundação).
@@ -462,39 +442,25 @@ por inundação).
 
 ### Sistemas P2P estruturados
 
-Os membros do sistema
-comunicam de acordo com uma
-organização definida de forma
-determinista com base num
-`endereço lógico`.
+Os membros do sistema comunicam de acordo com uma organização definida de forma determinista com base num *endereço lógico*.
 
-`Positivo:`
-* Boa latência/escalabilidade -
-Conhecem-se topologias com
-encaminhamento/pesquisa
-com custo O(log n), com n
-nós no sistema, por exemplo.
+*Positivo:*
+* Boa latência/escalabilidade - Conhecem-se topologias com encaminhamento/pesquisa com custo `O(log n)`, com `n` nós no sistema, por exemplo
 
-`Negativo:`
-* Maior complexidade
-É necessário gastar recursos
-para manter a topologia
-correta face às entradas e
-saídas dos nós (churn)
+*Negativo:*
+* Maior complexidade - É necessário gastar recursos para manter a topologia correta face às entradas e saídas dos nós (churn)
 
 
-Permitem implementar tabelas de dispersão
-distribuídas, i.e., DHTs (Distributed Hash Tables):
+Permitem implementar tabelas de dispersão distribuídas, e.g., DHTs (Distributed Hash Tables):
 
-- lookup( chave) -> IP
-- get( IP, chave) -> valor
-- put( IP, chave, valor)
+- `lookup(chave) -> IP`
+- `get(IP, chave) -> valor`
+- `put(IP, chave, valor)`
 
 ---
 
-## DHTS: CARACTERÍSTICAS
-
-`identificador = hash(info)`
+## DHT (Distributed Hash Table) - Características
+*identificador = hash(info)*
 
 Aspetos importantes...
 
@@ -503,116 +469,98 @@ todos os nós.
 
 * Distribuição da informação? – deve ser uniforme por todos os nós.
 
-* Replicação da informação? – `a entrada e saída contínua de nós obriga a
-manter a informação replicada nos nós certos e em número adequado.`
+* Replicação da informação? – a entrada e saída contínua de nós obriga a
+manter a informação replicada nos nós certos e em número adequado.
 
 ---
 
-## BITTORRENT-VERSÃO ORIGINAL (SIMPLIFICADO)
+## BitTorrent - Versão Original (Simplificado)
 
-`Arquitetura BitTorrent:`
-* C/S
-    * `Tracker:` servidor centralizado HTTP que serve o ficheiro .torrent e a lista dos peers
-que estão a descarregar o ficheiro
-`Peers:` como clientes, acedem ao tracker para obter a lista de outros peers a
+### Arquitetura BitTorrent:
+* **C/S**
+    * *Tracker* - servidor centralizado HTTP que serve o ficheiro `.torrent` e a lista dos peers que estão a descarregar o ficheiro
+
+    * *Peers:* como clientes, acedem ao tracker para obter a lista de outros peers a
 descarregar o ficheiro
 
-* P2P
-    * `Peers` comunicam entre si para trocar blocos do ficheiro
-Toma-lá dá-cá (tit-for-tat): peer só envia bloco em troca de outro bloco
-Peer envia alguns blocos a outros peers (sem contrapartida - aleatoriamente)
-Peer descarrega blocos aleatoriamente
-(Qual a motivação de cada uma destas propriedades?)
+* **P2P**
+    * *Peers* - comunicam entre si para trocar blocos do ficheiro
+        * Toma-lá dá-cá (tit-for-tat) - Peer só envia bloco em troca de outro bloco
+        * Peer envia alguns blocos a outros peers (sem contrapartida - aleatoriamente)
+        * Peer descarrega blocos aleatoriamente
 
 ---
 
-## EDGE-SERVER
+## Edge-Server
 
-`Sistemas edge-server`
-* Existem servidores colocados nos ISP para responder a pedidos
-e.g., content-distribution networks (CDNs)
-Propriedades
-Menor latência, filtragem, distribuição de carga, etc.
+*Sistemas edge-server*
+* Existem servidores colocados nos ISP para responder a pedidos e.g., content-distribution networks (CDNs)
+    * Propriedades - Menor latência, filtragem, distribuição de carga, etc.
 
-`Nota:`
-  *   `Origin server` - Servidor origem de ondem vem a info.
-   *  `akamai`- Servidores distribuidos por varios continentes/paises que comunição com o `origin server` e os `End users`, funciona como um proxy em que contem uma cache.
-  *   `End users`: clientes que acedem a `akamai`.
+*Nota:*
+  *   *Origin server* - Servidor origem de ondem vem a info.
+   *  *Akamai*- Servidores distribuidos por vários continentes/países que comunição com o *origin server* e os *End users*, funciona como um proxy em que contem uma cache.
+  *   *End users*: clientes que acedem a *akamai*.
 
 
-`Akamai edge servers só iram contactar o servidor origem quando :`
-* O objeto não se encontra na cache.
-* Se o TTL tiver expirado.
-* Se objeto se encontrar no-store.
+*Akamai edge servers só contactam o servidor origem quando*
+* O objeto não se encontra na cache
+* Se o TTL tiver expirado
+* Se objeto se encontrar no-store
 
 ---
 
-## MODELO DE INTERACÇÃO
-
-`Tipo de interação`
-* Ativa: Processo solicita execução de operação noutro processo
-
-* Reativa: Evento no sistema desencadeia ação num processo
-
-* Indireta: Processos comunicam através de um espaço partilhado
+## Modelo de Interação
+* **Ativa** - Processo solicita execução de operação noutro processo
+* **Reativa** - Evento no sistema desencadeia ação num processo
+* **Indireta** - Processos comunicam através de um espaço partilhado
 
 ---
 
-## ALGUMAS DEFINIÇÕES
-
-
-### Fault tolerance - tolerância a falhas.
-Propriedade de um sistema distribuído que lhe permite `recuperar` da existência de falhas `sem introduzir comportamentos incorretos`.
+## Algumas Definições
+### **Fault tolerance** - Tolerância a Falhas
+Propriedade de um sistema distribuído que lhe permite *recuperar* da existência de falhas *sem introduzir comportamentos incorretos*.
 Um sistema deste tipo pode mascarar as falhas e continuar
-`a operar`, ou`parar` e voltar a operar mais tarde, de forma
+*a operar*, ou *parar* e voltar a operar mais tarde, de forma
 coerente, após reparação da falha
 
 ---
 
-### Availability – disponibilidade.
+### **Availability** – Disponibilidade
 
-Mede a fracção de tempo em que
-um serviço está a operar correctamente, isto é, de acordo com
-a sua especificação.
+* Mede a fracção de tempo em que um serviço está a operar correctamente, isto é, de acordo com a sua especificação.
 
 ---
 
-### Reliability - fiabilidade.
+### **Reliability** - Fiabilidade
 
-Mede o tempo desde um instante inicial
-até à primeira falha, i.e., o tempo que um sistema funciona
-correctamente sem falhas.
+* Mede o tempo desde um instante inicial até à primeira falha, e.g., o tempo que um sistema funciona correctamente sem falhas.
 
 ---
 
----
+## Tipos de Falhas dos Componentes
 
-## TIPOS DE FALHAS DOS COMPONENTES
-
-* Uma `falha por omissão` dá-se quando um processo ou um canal de
+* *Falha por Omissão* - dá-se quando um processo ou um canal de
 comunicação falha a execução de uma acção que devia executar 
 
-* Uma `falha temporal` dá-se quando um evento que se devia produzir num
+* *Falha Temporal* - dá-se quando um evento que se devia produzir num
 determinado período de tempo ocorreu mais tarde – normalmente em
 sistemas de tempo real
 
-* Uma `falha arbitrária ou bizantina` dá-se quando se produziu algo não
+* *Falha Arbitrária ou Bizantina* - dá-se quando se produziu algo não
 previsto.
-    * Exemplo: chegou uma mensagem corrompida, um atacante produziu uma
-    mensagem não esperada.
-    Para lidar com estas falhas é necessário garantir que elas não levam a que
-    outros componentes passem a estados incorrectos
+    * Exemplo: chegou uma mensagem corrompida, um atacante produziu uma mensagem não esperada. Para lidar com estas falhas é necessário garantir que elas não levam a que outros componentes passem a estados incorrectos
 
 ---
 
-## TIPOS DE ERRO/FALHA: DURAÇÃO
+## Tipos de Erros/Falha: DURAÇÃO
 
-* `Permanentes`: mantêm-se enquanto não forem reparadas (ex:
+* *Permanentes*: mantêm-se enquanto não forem reparadas (ex:
 computador avaria)
 Mais fáceis de detectar.
 Mais difíceis de reparar.
 
-* `Temporárias`: ocorrem durante um intervalo de tempo limitado,
+* *Temporárias*: ocorrem durante um intervalo de tempo limitado,
 geralmente por influência externa
 Mais difíceis de reproduzir, detectar.
 Mais fáceis de reparar.
