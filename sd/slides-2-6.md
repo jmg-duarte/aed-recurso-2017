@@ -1,3 +1,5 @@
+> Autor: André Teixeira, nº 48047
+
 # 2 - Sistemas de Comunicação Direta
 
 ## Sincronização
