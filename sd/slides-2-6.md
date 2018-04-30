@@ -329,37 +329,37 @@ Maior número de computadores envolvido
 * Existem vários servidores com a mesma interface, cada um capaz de
  responder a uma parte dos pedidos
 
-*Positivo:*
-* Permite distribuir a carga, melhorando o desempenho (potencialmente)
-Não existe um ponto de falha único.
+    *Positivo:*
+    * Permite distribuir a carga, melhorando o desempenho (potencialmente)
+    Não existe um ponto de falha único.
 
-*Negativo:*
-* Falha de um servidor impede acesso aos dados presentes nesse servidor
-difícil de aplicar em alguns modelos de dados.
+    *Negativo:*
+    * Falha de um servidor impede acesso aos dados presentes nesse servidor
+    difícil de aplicar em alguns modelos de dados.
 
 ### *Cliente/servidor replicado:*
 * Existem vários servidores idênticos (e.g. capazes de responder aos
 mesmo pedidos)
 
-*Positivo:*
-* Redundância - não existe um ponto de falha único
-Permite distribuir a carga, melhorando o desempenho (potencialmente)
+    *Positivo:*
+    * Redundância - não existe um ponto de falha único
+    Permite distribuir a carga, melhorando o desempenho (potencialmente)
 
-*Negativo:*
-* Coordenação - manter estado do servidor coerente em todas as réplicas
-Recuperar da falha parcial de um servidor
+    *Negativo:*
+    * Coordenação - manter estado do servidor coerente em todas as réplicas
+    Recuperar da falha parcial de um servidor
 
 ### *Cliente/servidor geo-replicado:*
 * Servidor replicado, com réplicas distribuídas geograficamente
 
-*Positivo:*
-* Proximidade aos clientes melhora a qualidade de serviço (latência)
-Redundância acrescida – as falhas das réplicas são (ainda) mais
-independentes
+    *Positivo:*
+    * Proximidade aos clientes melhora a qualidade de serviço (latência)
+    Redundância acrescida – as falhas das réplicas são (ainda) mais
+    independentes
 
-*Negativo:*
-* Coordenação mais dispendiosa – maior separação física das réplicas
-traduz-se na utilização de canais com latência significativa
+    *Negativo:*
+    * Coordenação mais dispendiosa – maior separação física das réplicas
+    traduz-se na utilização de canais com latência significativa
 
 ---
 
